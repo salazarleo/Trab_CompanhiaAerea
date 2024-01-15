@@ -1,0 +1,10 @@
+db.sqlite3
+A3/__pycache__/*
+/apps/piloto/__pycache__/*
+/apps/piloto/migrations/*
+/apps/aviao/__pycache__/*
+/apps/aviao/migrations/*
+/apps/passagem/__pycache__/*
+/apps/passagem/migrations/*
+/apps/passageiro/__pycache__/*
+/apps/passageiro/migrations/*

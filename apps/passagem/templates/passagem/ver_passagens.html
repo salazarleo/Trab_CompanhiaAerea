@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Passagem</title>
+    <!-- Adicione o link para o Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/ver_passagem.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav__logo">Connect</div>
+        <ul class="nav__links">
+          <li class="link" ><a href="{% url 'home' %}">Home</a></li>
+          <li class="link"><a href="{% url 'aviao:criar_aviao' %}">Aviões</a></li>
+          <li class="link"><a href="{% url 'passageiro:criar_passageiro' %}">Passageiros</a></li>
+          <li class="link"><a href="{% url 'passagem:criar_passagem' %}">Passagens</a></li>
+          <li class="link"><a href="{% url 'piloto:criar_piloto' %}">Pilotos</a></li>
+        </ul>
+        <button class="btn btn-saiba">Sobre Nós</button>
+      </nav>
+
+<script>    var urlSaibaMais = '{% url "saiba_mais" %}';
+    var backButton = document.querySelector('.btn-saiba');
+
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            window.location.href = urlSaibaMais;
+        });
+    }
+</script>
+
+
+
+      
+    <!-- Conteúdo da página -->
+    <div class="container mt-5">
+        <h1 class="mb-4">Detalhes da Passagem</h1>
+
+        <!-- Tabs de categorias -->
+        <ul class="nav nav-tabs" id="passagemTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="todos-tab" data-toggle="tab" href="#todos" role="tab" aria-controls="todos"
+                    aria-selected="true">Todos</a>
+            </li>
+            <!-- Adicione mais abas de categorias aqui, se necessário -->
+        </ul>
+
+        <!-- Cards das passagens -->
+        <div class="card-deck mt-4">
+            {% for passagem in passagens %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Passagem {{ passagem.ID }}</h5>
+                    <p class="card-text"><strong>Nome:</strong>  {{ passagem.nome }}</p>
+                    <p class="card-text"><strong>Assento:</strong> {{ passagem.assento }}</p>
+                    <p class="card-text"><strong>Destino:</strong> {{ passagem.destino }}</p>
+                    <p class="card-text"><strong>Horário:</strong> {{ passagem.horario }}</p>
+                    <p class="card-text"><strong>Portão:</strong> {{ passagem.portao }}</p>
+                    <p class="card-text"><strong>Preço:</strong> R$ {{ passagem.preco }}</p>
+                </div>
+                <div class="card-footer">
+                    <!-- Botão "Comprar" que abre a modal -->
+                    <button type="button" class="btn btn-primary btn-block mt-2" data-toggle="modal"
+                        data-target="#modalPassagem{{ passagem.ID }}">Mais Informações</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- Modais para cada passagem -->
+    {% for passagem in passagens %}
+    <div class="modal fade" id="modalPassagem{{ passagem.ID }}" tabindex="-1" role="dialog"
+        aria-labelledby="modalPassagem{{ passagem.ID }}Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPassagem{{ passagem.ID }}Label">Detalhes da sua Passagem 
+                       </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>ID:</strong> {{ passagem.ID }}</p>
+                    <p><strong>Assento:</strong> {{ passagem.assento }}</p>
+                    <p><strong>Destino:</strong> {{ passagem.destino }}</p>
+                    <p><strong>Horário:</strong> {{ passagem.horario }}</p>
+                    <p><strong>Portão:</strong> {{ passagem.portao }}</p>
+                    <p><strong>Preço:</strong> R$ {{ passagem.preco }}</p>
+                    <!-- Adicione mais informações ou opções de compra aqui, se necessário -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Comprar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Adicione o link para o Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
+    <!-- A ordem dos scripts é importante, o Popper.js deve vir antes do Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        <div class="text-center mt-4">
+            <a class="btn btn-secondary" href="{% url 'home' %}">🡸 Voltar</a>
+        </div>
+        
+</body>
+
+</html>

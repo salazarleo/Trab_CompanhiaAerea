@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Passagens</title>
+    <!-- Adicione o link para o Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <!-- Adicione o link para o seu arquivo de estilo CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style_criar_passagens.css' %}">
+    <!-- Adicione o link para o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" crossorigin="anonymous"></script>
+    <!-- A ordem dos scripts é importante, o Popper.js deve vir antes do Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <!-- Adicione o link para o Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav__logo">Connect</div>
+        <ul class="nav__links">
+            <li class="link"><a href="{% url 'home' %}">Home</a></li>
+            <li class="link"><a href="{% url 'aviao:criar_aviao' %}">Aviões</a></li>
+            <li class="link"><a href="{% url 'passageiro:criar_passageiro' %}">Passageiros</a></li>
+            <li class="link"><a href="{% url 'passagem:criar_passagem' %}">Passagens</a></li>
+            <li class="link"><a href="{% url 'piloto:criar_piloto' %}">Pilotos</a></li>
+        </ul>
+        <button class="btn btn-saiba">Sobre Nós</button>
+    </nav>
+
+    <section class="container mt-4">
+        <ul class="nav nav-tabs" id="myTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="criar-tab" data-toggle="tab" href="#criar" role="tab"
+                    aria-controls="criar" aria-selected="true">Criar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="listar-tab" data-toggle="tab" href="#listar" role="tab"
+                    aria-controls="listar" aria-selected="false">Listar</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabsContent">
+            <!-- Aba "Criar" -->
+            <div class="tab-pane fade show active" id="criar" role="tabpanel" aria-labelledby="criar-tab">
+                <div class="jumbotron">
+                    <h1 class="display-4">Criar Passagens</h1>
+                    <p class="lead">Preencha o formulário abaixo para criar uma nova passagem.</p>
+                    <form method="post" action="{% url 'passagem:criar_passagem' %}" class="form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="salvar">
+                            <button class="btn btn-primary" type="submit">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Aba "Listar" -->
+            <div class="tab-pane fade" id="listar" role="tabpanel" aria-labelledby="listar-tab">
+                {% if passagens %}
+                    <div class="list-group">
+                        <h2>Lista de Passagens</h2>
+                        {% for passagem in passagens %}
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <h5 class="mb-1">ID: {{ passagem.ID }}</h5>
+                                <p class="mb-1">Assento: {{ passagem.assento }}</p>
+                                <p class="mb-1">Destino: {{ passagem.destino }}</p>
+                                <p class="mb-1">Horário: {{ passagem.horario }}</p>
+                                <p class="mb-1">Portão: {{ passagem.portao }}</p>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a class="btn btn-secondary" href="{% url 'home' %}">🡸 Voltar</a>
+        </div>
+    </section>
+    <script>
+        var urlSaibaMais = '{% url "saiba_mais" %}';
+        var saibaMaisButton = document.querySelector('.btn-saiba');
+
+        if (saibaMaisButton) {
+            saibaMaisButton.addEventListener('click', function () {
+                window.location.href = urlSaibaMais;
+            });
+        }
+
+        var urlHome = '{% url "home" %}';
+        var backButton = document.querySelector('.btn-secondary');
+
+        if (backButton) {
+            backButton.addEventListener('click', function () {
+                window.location.href = urlHome;
+            });
+        }
+    </script>
+</body>
+
+</html>
